@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عيادة د. أحمد يونس لطب الأسنان — بغداد</title>
+  <meta name="description" content="عيادة د. أحمد يونس لطب الأسنان في بغداد. احجز موعدك الآن. تبييض، تقويم، زراعة أسنان وأكثر.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      direction: rtl;
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: #f8f8f8;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      background: #6C3FC5;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 12px rgba(108,63,197,0.3);
+    }
+    nav .logo { color: #fff; font-size: 18px; font-weight: 600; letter-spacing: 0.3px; }
+    nav .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    nav .nav-links a {
+      color: rgba(255,255,255,0.88);
+      font-size: 14px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+    }
+    nav .nav-links a:hover { color: #fff; border-bottom-color: #FFD6F0; }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: #5B2EA6;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 3rem 2rem 1.5rem;
+      text-align: center;
+      color: #fff;
+    }
+    .hero-content h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .hero-content p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 2rem;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: #fff;
+      color: #6C3FC5;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.2); }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.7);
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.12); }
+
+    /* ===== HERO SVG ILLUSTRATION ===== */
+    .hero-svg { position: relative; z-index: 2; width: 100%; display: block; }
+
+    /* ===== STATS ===== */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: #4a2490;
+    }
+    .stat {
+      padding: 1.4rem;
+      text-align: center;
+      border-left: 1px solid rgba(255,255,255,0.12);
+    }
+    .stat:last-child { border-left: none; }
+    .stat .num { font-size: 24px; font-weight: 700; color: #FFD6F0; }
+    .stat .lbl { font-size: 13px; color: rgba(255,255,255,0.72); margin-top: 3px; }
+
+    /* ===== SECTIONS ===== */
+    section { padding: 3rem 2rem; max-width: 1000px; margin: 0 auto; }
+    .section-wrap { background: #fff; }
+    .section-wrap-alt { background: #f8f8f8; }
+    section h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 1.8rem;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    section h2::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, #6C3FC5, #E0409A, transparent);
+      border-radius: 2px;
+    }
+    .section-divider { border: none; border-top: 1px solid #ebebeb; margin: 0; }
+
+    /* ===== SERVICES ===== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 14px;
+    }
+    .service-card {
+      background: #fff;
+      border: 1px solid #ebebeb;
+      border-radius: 14px;
+      padding: 1.4rem 1rem;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+    .service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(108,63,197,0.12); }
+    .service-icon {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .service-icon svg { width: 24px; height: 24px; }
+    .si1{background:#EDE7FF;} .si2{background:#FFE4F3;} .si3{background:#E0F7FF;}
+    .si4{background:#FFF3D6;} .si5{background:#E6FFE9;} .si6{background:#FFE9E9;}
+    .service-card h3 { font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 5px; }
+    .service-card p { font-size: 12px; color: #777; }
+
+    /* ===== BOOKING ===== */
+    .booking-form {
+      background: #fff;
+      border: 1px solid #ebebeb;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(108,63,197,0.08);
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-group label { font-size: 13px; color: #555; font-weight: 500; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: inherit;
+      font-size: 14px;
+      padding: 10px 14px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      background: #fafafa;
+      color: #1a1a1a;
+      direction: rtl;
+      width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #9B6EF5;
+      box-shadow: 0 0 0 3px rgba(108,63,197,0.1);
+    }
+    .form-group.full { grid-column: 1 / -1; }
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(90deg, #6C3FC5, #E0409A, #F4A836);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 14px;
+      font-family: inherit;
+      transition: opacity 0.2s, transform 0.15s;
+      letter-spacing: 0.5px;
+    }
+    .submit-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .success-msg {
+      display: none;
+      background: #EDE7FF;
+      border: 1px solid #9B6EF5;
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      color: #4a2490;
+      font-size: 14px;
+      margin-top: 14px;
+      font-weight: 500;
+    }
+
+    /* ===== DOCTOR ===== */
+    .doctor-card {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      background: #fff;
+      border: 1px solid #ebebeb;
+      border-radius: 16px;
+      padding: 2rem;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 20px rgba(108,63,197,0.07);
+    }
+    .doctor-avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6C3FC5, #E0409A);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px; font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .doctor-info h3 { font-size: 20px; font-weight: 700; margin-bottom: 5px; }
+    .doctor-info .spec { font-size: 14px; color: #6C3FC5; margin-bottom: 10px; font-weight: 600; }
+    .doctor-info p { font-size: 14px; color: #555; line-height: 1.7; }
+    .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .tag { font-size: 12px; padding: 5px 12px; border-radius: 20px; font-weight: 500; }
+    .t1{background:#EDE7FF;color:#4a2490;} .t2{background:#FFE4F3;color:#8B1A5A;}
+    .t3{background:#E0F7FF;color:#0A5C7A;} .t4{background:#FFF3D6;color:#7A4F00;}
+
+    /* ===== GALLERY ===== */
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .gallery-item {
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      border: 1px solid #ebebeb;
+    }
+    .gallery-before-after { display: flex; width: 100%; height: 100%; }
+    .gallery-side {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600;
+      flex-direction: column; gap: 5px;
+    }
+    .gb1b{background:#F1EFE8;color:#5F5E5A;} .gb1a{background:#EDE7FF;color:#4a2490;}
+    .gb2b{background:#F1EFE8;color:#5F5E5A;} .gb2a{background:#FFE4F3;color:#8B1A5A;}
+    .gb3b{background:#F1EFE8;color:#5F5E5A;} .gb3a{background:#FFF3D6;color:#7A4F00;}
+    .gallery-note { font-size: 12px; color: #999; margin-top: 12px; text-align: center; }
+
+    /* ===== REVIEWS ===== */
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .review-card {
+      background: #fff;
+      border: 1px solid #ebebeb;
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      transition: box-shadow 0.2s;
+    }
+    .review-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+    .stars { color: #F4A836; font-size: 16px; margin-bottom: 8px; letter-spacing: 2px; }
+    .review-text { font-size: 13px; color: #666; line-height: 1.7; margin-bottom: 12px; }
+    .reviewer { display: flex; align-items: center; gap: 10px; }
+    .reviewer-avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      color: #fff;
+    }
+    .ra1{background:#6C3FC5;} .ra2{background:#E0409A;} .ra3{background:#F4A836;}
+    .reviewer-name { font-size: 13px; font-weight: 600; color: #333; }
+
+    /* ===== CONTACT ===== */
+    .map-placeholder {
+      background: #f4f0ff;
+      border: 1px solid #d4c5ff;
+      border-radius: 14px;
+      padding: 2.5rem;
+      text-align: center;
+      min-height: 180px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px;
+      color: #4a2490;
+    }
+    .map-placeholder .map-title { font-size: 15px; font-weight: 600; }
+    .map-placeholder .map-sub { font-size: 13px; color: #8060C0; }
+    .map-placeholder .map-code {
+      font-size: 12px;
+      background: #fff;
+      border: 1px dashed #9B6EF5;
+      border-radius: 8px;
+      padding: 8px 16px;
+      color: #666;
+      margin-top: 6px;
+      font-family: monospace;
+      direction: ltr;
+    }
+    .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 1.2rem; }
+    .contact-item {
+      display: flex; align-items: center; gap: 12px;
+      background: #fff;
+      border: 1px solid #ebebeb;
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .contact-item .icon {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .ci1{background:#EDE7FF;} .ci2{background:#FFE4F3;} .ci3{background:#FFF3D6;}
+    .contact-item .icon svg { width: 18px; height: 18px; }
+    .contact-item .lbl { font-size: 11px; color: #999; margin-bottom: 2px; }
+    .contact-item .val { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: linear-gradient(90deg, #4a2490, #9B1F6A, #C47800);
+      color: rgba(255,255,255,0.88);
+      text-align: center;
+      padding: 1.5rem 2rem;
+      font-size: 13px;
+    }
+
+    /* ===== WHATSAPP FLOAT ===== */
+    .whatsapp-btn {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      width: 56px; height: 56px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+      text-decoration: none;
+      z-index: 999;
+      transition: transform 0.2s;
+    }
+    .whatsapp-btn:hover { transform: scale(1.08); }
+    .whatsapp-btn svg { width: 30px; height: 30px; fill: #fff; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      nav .nav-links { gap: 0.8rem; }
+      nav .nav-links a { font-size: 12px; }
+      .hero-content h1 { font-size: 26px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      section { padding: 2rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">🦷 د. أحمد يونس — عيادة الأسنان</div>
+    <ul class="nav-links">
+      <li><a href="#booking">حجز موعد</a></li>
+      <li><a href="#services">الخدمات</a></li>
+      <li><a href="#doctor">الطبيب</a></li>
+      <li><a href="#reviews">آراء المرضى</a></li>
+      <li><a href="#contact">التواصل</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1>ابتسامتك صحتنا ✨</h1>
+      <p>رعاية أسنانك بأحدث التقنيات وأيدٍ موثوقة — عيادة د. أحمد يونس في بغداد</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">احجز موعدك الآن</button>
+        <button class="btn-outline" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">استكشف خدماتنا</button>
+      </div>
+    </div>
+
+    <!-- CARTOON ILLUSTRATION -->
+    <svg class="hero-svg" viewBox="0 0 800 230" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#6C3FC5"/>
+          <stop offset="40%" stop-color="#D63A8E"/>
+          <stop offset="75%" stop-color="#F4703A"/>
+          <stop offset="100%" stop-color="#F4A836"/>
+        </linearGradient>
+        <linearGradient id="floorGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#4a2490"/>
+          <stop offset="50%" stop-color="#9B1F6A"/>
+          <stop offset="100%" stop-color="#C47800"/>
+        </linearGradient>
+      </defs>
+      <rect width="800" height="230" fill="url(#bgGrad)"/>
+      <rect x="0" y="190" width="800" height="40" fill="url(#floorGrad)" opacity="0.7"/>
+      <!-- decorative circles -->
+      <circle cx="50" cy="50" r="60" fill="rgba(255,255,255,0.06)"/>
+      <circle cx="750" cy="180" r="80" fill="rgba(255,255,255,0.05)"/>
+      <circle cx="400" cy="10" r="50" fill="rgba(255,255,255,0.04)"/>
+      <circle cx="650" cy="30" r="35" fill="rgba(255,200,100,0.1)"/>
+      <circle cx="120" cy="170" r="40" fill="rgba(200,100,255,0.1)"/>
+      <!-- Main tooth center -->
+      <g transform="translate(355,18)">
+        <ellipse cx="35" cy="65" rx="34" ry="43" fill="#ffffff" stroke="#FFD6F0" stroke-width="2"/>
+        <rect x="15" y="100" width="11" height="30" rx="5.5" fill="#FFE9F9" stroke="#FFB8EC" stroke-width="1.5"/>
+        <rect x="39" y="100" width="11" height="30" rx="5.5" fill="#FFE9F9" stroke="#FFB8EC" stroke-width="1.5"/>
+        <ellipse cx="24" cy="56" rx="4.5" ry="5" fill="#6C3FC5"/>
+        <ellipse cx="46" cy="56" rx="4.5" ry="5" fill="#6C3FC5"/>
+        <ellipse cx="25.5" cy="54.5" rx="1.5" ry="1.5" fill="#fff"/>
+        <ellipse cx="47.5" cy="54.5" rx="1.5" ry="1.5" fill="#fff"/>
+        <path d="M22 74 Q35 84 48 74" stroke="#E0409A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="18" cy="68" rx="6" ry="4" fill="#FFB8D0" opacity="0.5"/>
+        <ellipse cx="52" cy="68" rx="6" ry="4" fill="#FFB8D0" opacity="0.5"/>
+        <ellipse cx="50" cy="40" rx="5" ry="8" fill="rgba(255,255,255,0.4)" transform="rotate(-20,50,40)"/>
+        <text x="76" y="32" font-size="18" fill="#FFD700">✦</text>
+        <text x="-14" y="26" font-size="13" fill="#FF9EE0">✦</text>
+        <text x="80" y="70" font-size="11" fill="#FFB8EC">✦</text>
+      </g>
+      <!-- Dentist chair -->
+      <g transform="translate(75,55)">
+        <rect x="10" y="22" width="58" height="78" rx="9" fill="#9B6EF5" stroke="#C8A0FF" stroke-width="1.5"/>
+        <rect x="0" y="84" width="78" height="24" rx="9" fill="#9B6EF5" stroke="#C8A0FF" stroke-width="1.5"/>
+        <rect x="18" y="8" width="38" height="20" rx="7" fill="#C8A0FF"/>
+        <rect x="23" y="108" width="28" height="20" rx="4" fill="#6C3FC5"/>
+        <rect x="8" y="126" width="60" height="8" rx="4" fill="#4a2490"/>
+        <rect x="66" y="58" width="32" height="11" rx="5.5" fill="#E0409A"/>
+        <line x1="90" y1="26" x2="97" y2="58" stroke="#FFB8EC" stroke-width="3" stroke-linecap="round"/>
+        <ellipse cx="91" cy="22" rx="14" ry="9" fill="#F4A836" stroke="#FFD6A0" stroke-width="1.5"/>
+        <ellipse cx="91" cy="22" rx="8" ry="5" fill="#FFD6A0"/>
+      </g>
+      <!-- Tool tray -->
+      <g transform="translate(570,85)">
+        <rect x="0" y="45" width="85" height="11" rx="5.5" fill="#4a2490" opacity="0.7"/>
+        <rect x="10" y="12" width="9" height="38" rx="4.5" fill="#FFB8EC"/>
+        <ellipse cx="14.5" cy="12" rx="7" ry="4.5" fill="#E0409A"/>
+        <rect x="32" y="18" width="7" height="32" rx="3.5" fill="#C8A0FF"/>
+        <ellipse cx="35.5" cy="18" rx="6" ry="3.5" fill="#9B6EF5"/>
+        <rect x="54" y="6" width="8" height="44" rx="4" fill="#FFD6A0"/>
+        <rect x="50" y="4" width="16" height="8" rx="4" fill="#F4A836"/>
+      </g>
+      <!-- Small tooth left -->
+      <g transform="translate(195,92)">
+        <ellipse cx="22" cy="36" rx="22" ry="30" fill="#fff" stroke="#FFB8EC" stroke-width="1.5"/>
+        <rect x="9" y="60" width="8" height="20" rx="4" fill="#FFE9F9" stroke="#FFB8EC" stroke-width="1"/>
+        <rect x="27" y="60" width="8" height="20" rx="4" fill="#FFE9F9" stroke="#FFB8EC" stroke-width="1"/>
+        <ellipse cx="15" cy="30" rx="3.5" ry="4" fill="#E0409A"/>
+        <ellipse cx="29" cy="30" rx="3.5" ry="4" fill="#E0409A"/>
+        <path d="M13 43 Q22 50 31 43" stroke="#D63A8E" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="10" cy="38" rx="5" ry="3" fill="#FFB8D0" opacity="0.5"/>
+        <ellipse cx="34" cy="38" rx="5" ry="3" fill="#FFB8D0" opacity="0.5"/>
+      </g>
+      <!-- Small tooth right -->
+      <g transform="translate(528,98)">
+        <ellipse cx="20" cy="32" rx="20" ry="26" fill="#fff" stroke="#FFD6A0" stroke-width="1.5"/>
+        <rect x="8" y="54" width="7" height="17" rx="3.5" fill="#FFF3D6" stroke="#FFD6A0" stroke-width="1"/>
+        <rect x="25" y="54" width="7" height="17" rx="3.5" fill="#FFF3D6" stroke="#FFD6A0" stroke-width="1"/>
+        <ellipse cx="13" cy="27" rx="3" ry="3.5" fill="#F4A836"/>
+        <ellipse cx="27" cy="27" rx="3" ry="3.5" fill="#F4A836"/>
+        <path d="M11 40 Q20 46 29 40" stroke="#C47800" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="8" cy="34" rx="4" ry="3" fill="#FFD6A0" opacity="0.6"/>
+        <ellipse cx="32" cy="34" rx="4" ry="3" fill="#FFD6A0" opacity="0.6"/>
+      </g>
+      <!-- Medical cross left -->
+      <g transform="translate(38,28)">
+        <rect x="10" y="0" width="14" height="36" rx="5" fill="#FFB8EC" opacity="0.85"/>
+        <rect x="0" y="11" width="34" height="14" rx="5" fill="#FFB8EC" opacity="0.85"/>
+      </g>
+      <!-- Medical cross right -->
+      <g transform="translate(720,38)">
+        <rect x="9" y="0" width="13" height="34" rx="4.5" fill="#FFD6A0" opacity="0.85"/>
+        <rect x="0" y="10" width="31" height="13" rx="4.5" fill="#FFD6A0" opacity="0.85"/>
+      </g>
+      <!-- Bubbles -->
+      <circle cx="155" cy="38" r="6" fill="#FFB8EC" opacity="0.7"/>
+      <circle cx="175" cy="18" r="4" fill="#C8A0FF" opacity="0.7"/>
+      <circle cx="300" cy="22" r="5" fill="#F4A836" opacity="0.6"/>
+      <circle cx="490" cy="20" r="4" fill="#FFB8EC" opacity="0.6"/>
+      <circle cx="620" cy="48" r="5" fill="#C8A0FF" opacity="0.6"/>
+      <circle cx="660" cy="22" r="7" fill="#FFD6A0" opacity="0.5"/>
+      <!-- Toothbrush -->
+      <g transform="translate(255,150) rotate(-30)">
+        <rect x="0" y="0" width="10" height="55" rx="5" fill="#9B6EF5"/>
+        <rect x="-3" y="-8" width="16" height="14" rx="4" fill="#C8A0FF"/>
+        <rect x="0" y="-12" width="3" height="8" rx="1.5" fill="#fff" opacity="0.8"/>
+        <rect x="4" y="-12" width="3" height="8" rx="1.5" fill="#fff" opacity="0.8"/>
+        <rect x="7" y="-12" width="3" height="8" rx="1.5" fill="#fff" opacity="0.8"/>
+      </g>
+      <!-- Toothpaste -->
+      <g transform="translate(490,145)">
+        <rect x="0" y="5" width="50" height="28" rx="8" fill="#F4A836"/>
+        <rect x="42" y="10" width="14" height="18" rx="4" fill="#FFD6A0"/>
+        <ellipse cx="56" cy="19" rx="5" ry="5" fill="#fff"/>
+        <text x="6" y="24" font-size="9" fill="#fff" font-weight="500">✦✦✦</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="num">+١٢٠٠</div>
+      <div class="lbl">مريض سعيد</div>
+    </div>
+    <div class="stat">
+      <div class="num">+١٥ سنة</div>
+      <div class="lbl">خبرة طبية</div>
+    </div>
+    <div class="stat">
+      <div class="num">٦ أيام</div>
+      <div class="lbl">في الأسبوع</div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="section-wrap">
+    <hr class="section-divider">
+    <section id="services">
+      <h2>خدماتنا</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon si1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#6C3FC5" stroke-width="2"><path d="M12 2C8 2 6 5 6 8c0 4 2 6 2 10h8c0-4 2-6 2-10 0-3-2-6-6-6z"/></svg>
+          </div>
+          <h3>تبييض الأسنان</h3><p>إشراق فوري وآمن</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon si2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#D63A8E" stroke-width="2"><rect x="3" y="8" width="18" height="10" rx="2"/><path d="M7 8V6a2 2 0 0 1 4 0v2M13 8V6a2 2 0 0 1 4 0v2"/></svg>
+          </div>
+          <h3>تقويم الأسنان</h3><p>براكيت وشفاف</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon si3">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0A8FAA" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12h6M12 9v6"/></svg>
+          </div>
+          <h3>زراعة الأسنان</h3><p>تقنية حديثة دائمة</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon si4">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C47800" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <h3>حشوات تجميلية</h3><p>طبيعية وعالية الجودة</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon si5">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3>علاج اللثة</h3><p>صحة وقاية شاملة</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon si6">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C62828" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-6 0v4"/><rect x="2" y="9" width="20" height="13" rx="2"/></svg>
+          </div>
+          <h3>طب أسنان الأطفال</h3><p>بيئة ودية وآمنة</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- BOOKING -->
+  <div class="section-wrap-alt">
+    <hr class="section-divider">
+    <section id="booking">
+      <h2>احجز موعدك</h2>
+      <div class="booking-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>الاسم الكامل *</label>
+            <input type="text" id="fname" placeholder="أدخل اسمك الكامل">
+          </div>
+          <div class="form-group">
+            <label>رقم الهاتف *</label>
+            <input type="tel" id="fphone" placeholder="07XX XXX XXXX" dir="ltr">
+          </div>
+          <div class="form-group">
+            <label>الخدمة المطلوبة *</label>
+            <select id="fservice">
+              <option value="">اختر الخدمة...</option>
+              <option>تبييض الأسنان</option>
+              <option>تقويم الأسنان</option>
+              <option>زراعة الأسنان</option>
+              <option>حشوات تجميلية</option>
+              <option>علاج اللثة</option>
+              <option>طب أسنان الأطفال</option>
+              <option>فحص عام</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>التاريخ المفضل *</label>
+            <input type="date" id="fdate">
+          </div>
+          <div class="form-group">
+            <label>الوقت المفضل</label>
+            <select id="ftime">
+              <option value="">اختر الوقت...</option>
+              <option>٩:٠٠ صباحاً</option>
+              <option>١٠:٠٠ صباحاً</option>
+              <option>١١:٠٠ صباحاً</option>
+              <option>١٢:٠٠ ظهراً</option>
+              <option>٢:٠٠ مساءً</option>
+              <option>٣:٠٠ مساءً</option>
+              <option>٤:٠٠ مساءً</option>
+              <option>٥:٠٠ مساءً</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>حالة الزيارة</label>
+            <select id="ftype">
+              <option>مريض جديد</option>
+              <option>مراجعة دورية</option>
+              <option>حالة طارئة</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>ملاحظات إضافية (اختياري)</label>
+            <textarea id="fnotes" rows="3" placeholder="أي تفاصيل تودّ إخبارنا بها..."></textarea>
+          </div>
+        </div>
+        <button class="submit-btn" onclick="submitForm()">✅ تأكيد الحجز</button>
+        <div class="success-msg" id="successMsg">
+          🎉 تم استلام طلب حجزك بنجاح! سنتواصل معك على رقم هاتفك لتأكيد الموعد خلال ساعات.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- DOCTOR -->
+  <div class="section-wrap">
+    <hr class="section-divider">
+    <section id="doctor">
+      <h2>تعرّف على طبيبك</h2>
+      <div class="doctor-card">
+        <div class="doctor-avatar">أي</div>
+        <div class="doctor-info">
+          <h3>د. أحمد يونس</h3>
+          <div class="spec">أخصائي طب وتجميل الأسنان</div>
+          <p>خبرة تمتد لأكثر من ١٥ عاماً في مجال طب الأسنان التجميلي والتقويم والزراعة. حاصل على شهادة التخصص من جامعة بغداد، ومواكب لأحدث التقنيات والأساليب العلاجية في المجال. يؤمن الدكتور أحمد بأن كل مريض يستحق ابتسامة جميلة وصحة أسنان ممتازة.</p>
+          <div class="tags">
+            <span class="tag t1">طب أسنان تجميلي</span>
+            <span class="tag t2">تقويم الأسنان</span>
+            <span class="tag t3">زراعة الأسنان</span>
+            <span class="tag t4">علاج جذور</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="section-wrap-alt">
+    <hr class="section-divider">
+    <section id="gallery">
+      <h2>قبل وبعد</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <div class="gallery-before-after">
+            <div class="gallery-side gb1b"><span style="font-size:22px;">🦷</span><span>قبل</span><span style="font-size:10px;opacity:.7">تبييض</span></div>
+            <div class="gallery-side gb1a"><span style="font-size:22px;">✨</span><span>بعد</span><span style="font-size:10px;opacity:.8">تبييض</span></div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-before-after">
+            <div class="gallery-side gb2b"><span style="font-size:22px;">🦷</span><span>قبل</span><span style="font-size:10px;opacity:.7">تقويم</span></div>
+            <div class="gallery-side gb2a"><span style="font-size:22px;">😁</span><span>بعد</span><span style="font-size:10px;opacity:.8">تقويم</span></div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-before-after">
+            <div class="gallery-side gb3b"><span style="font-size:22px;">🦷</span><span>قبل</span><span style="font-size:10px;opacity:.7">زراعة</span></div>
+            <div class="gallery-side gb3a"><span style="font-size:22px;">💎</span><span>بعد</span><span style="font-size:10px;opacity:.8">زراعة</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="gallery-note">يمكنك استبدال هذه الأمثلة بصور حقيقية للمرضى (بإذنهم) عند نشر الموقع</p>
+    </section>
+  </div>
+
+  <!-- REVIEWS -->
+  <div class="section-wrap">
+    <hr class="section-divider">
+    <section id="reviews">
+      <h2>آراء مرضانا</h2>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text">تجربة ممتازة! الدكتور أحمد محترف جداً والعيادة نظيفة ومريحة. النتيجة فاقت توقعاتي. أنصح الجميع.</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar ra1">سم</div>
+            <span class="reviewer-name">سارة محمد</span>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text">عملت تبييض الأسنان والنتيجة رائعة جداً. الحجز كان سهل والمواعيد محترمة دائماً.</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar ra2">عخ</div>
+            <span class="reviewer-name">علي خالد</span>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text">أخذت ابني للدكتور وكان لطيفاً جداً معه. عيادة ممتازة لطب أسنان الأطفال وبيئة آمنة.</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar ra3">نأ</div>
+            <span class="reviewer-name">نور أحمد</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section-wrap-alt">
+    <hr class="section-divider">
+    <section id="contact">
+      <h2>الموقع والتواصل</h2>
+
+      <!-- 
+        ===== لإضافة خريطة Google Maps =====
+        1. اذهب إلى maps.google.com
+        2. ابحث عن موقع عيادتك
+        3. اضغط "مشاركة" ثم "تضمين خريطة"
+        4. انسخ كود الـ iframe والصقه هنا بدلاً من الكود أدناه
+      -->
+      <div class="map-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6C3FC5" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="map-title">موقع عيادة د. أحمد يونس — بغداد</div>
+        <div class="map-sub">أضف خريطة Google Maps هنا</div>
+        <div class="map-code">&lt;iframe src="رابط-الخريطة" ...&gt;&lt;/iframe&gt;</div>
+      </div>
+
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="icon ci1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#6C3FC5" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.5 2 2 0 0 1 3.59 1.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6 6l.89-.93a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="lbl">هاتف وواتساب</div>
+            <div class="val" dir="ltr">+964 770 808 8851</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="icon ci2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#D63A8E" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div>
+            <div class="lbl">ساعات العمل</div>
+            <div class="val">السبت – الخميس، ٩ص – ٦م</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="icon ci3">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C47800" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <div>
+            <div class="lbl">العنوان</div>
+            <div class="val">بغداد، العراق</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    جميع الحقوق محفوظة &copy; ٢٠٢٥ — عيادة د. أحمد يونس لطب الأسنان | بغداد، العراق
+  </footer>
+
+  <!-- WHATSAPP FLOAT BUTTON -->
+  <a class="whatsapp-btn" href="https://wa.me/9647708088851" target="_blank" title="تواصل عبر واتساب">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+    </svg>
+  </a>
+
+  <script>
+    function submitForm() {
+      const name = document.getElementById('fname').value.trim();
+      const phone = document.getElementById('fphone').value.trim();
+      const service = document.getElementById('fservice').value;
+      const date = document.getElementById('fdate').value;
+      if (!name || !phone || !service || !date) {
+        alert('يرجى ملء جميع الحقول الأساسية المعلّمة بـ *');
+        return;
+      }
+      document.getElementById('successMsg').style.display = 'block';
+      document.getElementById('fname').value = '';
+      document.getElementById('fphone').value = '';
+      document.getElementById('fservice').value = '';
+      document.getElementById('fdate').value = '';
+      document.getElementById('ftime').value = '';
+      document.getElementById('fnotes').value = '';
+      document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => { document.getElementById('successMsg').style.display = 'none'; }, 6000);
+    }
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>
