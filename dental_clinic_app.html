@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DentFlow Pro</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --teal:#0F6E56;--teal-light:#E1F5EE;--teal-mid:#1D9E75;
+    --blue:#185FA5;--blue-light:#E6F1FB;
+    --amber:#BA7517;--amber-light:#FAEEDA;
+    --red:#A32D2D;--red-light:#FCEBEB;
+    --green:#3B6D11;--green-light:#EAF3DE;
+    --gray:#5F5E5A;--gray-light:#F1EFE8;
+    --bg:#f8faf9;--card:#fff;--border:#e2e8e5;
+    --text:#1a2420;--muted:#6b7c76;
+    --sidebar-w:220px;--header-h:56px;
+    --font:'Georgia',serif;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif
+  }
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+  
+  /* HEADER */
+  #header{height:var(--header-h);background:var(--teal);display:flex;align-items:center;padding:0 16px;gap:12px;position:fixed;top:0;left:0;right:0;z-index:100}
+  #logo{font-family:var(--font);font-size:20px;color:#fff;letter-spacing:-0.5px;font-weight:bold}
+  #logo span{color:#9FE1CB;font-style:italic}
+  #hamburger{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;margin-right:4px}
+  #header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .hbadge{background:rgba(255,255,255,0.15);color:#fff;border-radius:20px;padding:4px 12px;font-size:12px}
+  .havatar{width:32px;height:32px;border-radius:50%;background:#9FE1CB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--teal)}
+  
+  /* LAYOUT */
+  #layout{display:flex;margin-top:var(--header-h);min-height:calc(100vh - var(--header-h))}
+  
+  /* SIDEBAR */
+  #sidebar{width:var(--sidebar-w);background:var(--card);border-right:1px solid var(--border);position:fixed;top:var(--header-h);bottom:0;overflow-y:auto;z-index:90;transition:transform 0.25s}
+  .nav-section{padding:16px 12px 4px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 14px;margin:1px 6px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--gray);transition:all 0.15s}
+  .nav-item:hover{background:var(--teal-light);color:var(--teal)}
+  .nav-item.active{background:var(--teal);color:#fff}
+  .nav-icon{font-size:15px;width:18px;text-align:center}
+  .nav-badge{margin-left:auto;background:var(--red-light);color:var(--red);border-radius:10px;padding:1px 7px;font-size:10px}
+  
+  /* MAIN */
+  #main{margin-left:var(--sidebar-w);flex:1;padding:24px;overflow-x:hidden}
+  
+  /* CARDS */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+  .card-title{font-size:15px;font-weight:600;margin-bottom:16px;color:var(--text);display:flex;align-items:center;gap:8px}
+  
+  /* STAT CARDS */
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+  .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+  .stat-value{font-size:26px;font-weight:700;color:var(--text);line-height:1}
+  .stat-sub{font-size:11px;color:var(--green);margin-top:4px}
+  
+  /* PAGE TITLE */
+  .page-title{font-family:var(--font);font-size:22px;font-weight:bold;color:var(--text);margin-bottom:4px}
+  .page-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+  
+  /* BUTTONS */
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s}
+  .btn-primary{background:var(--teal);color:#fff}.btn-primary:hover{background:#0F6E56;opacity:0.9}
+  .btn-outline{background:transparent;color:var(--teal);border:1px solid var(--teal)}.btn-outline:hover{background:var(--teal-light)}
+  .btn-sm{padding:5px 10px;font-size:12px}
+  .btn-danger{background:var(--red-light);color:var(--red);border:1px solid #f7c1c1}.btn-danger:hover{background:#f7c1c1}
+  
+  /* BADGES */
+  .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+  .badge-green{background:var(--green-light);color:var(--green)}
+  .badge-amber{background:var(--amber-light);color:var(--amber)}
+  .badge-red{background:var(--red-light);color:var(--red)}
+  .badge-blue{background:var(--blue-light);color:var(--blue)}
+  .badge-teal{background:var(--teal-light);color:var(--teal)}
+  .badge-gray{background:var(--gray-light);color:var(--gray)}
+  
+  /* TABLE */
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600}
+  td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+  tr:hover td{background:#fafcfb}
+  tr:last-child td{border-bottom:none}
+  
+  /* FORM */
+  .form-group{margin-bottom:14px}
+  .form-label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
+  .form-control{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);background:var(--bg);outline:none;transition:border 0.15s}
+  .form-control:focus{border-color:var(--teal)}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  
+  /* SECTIONS */
+  .section-hidden{display:none}
+  
+  /* PATIENT AVATAR */
+  .pat-avatar{width:38px;height:38px;border-radius:50%;background:var(--teal-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--teal);flex-shrink:0}
+  
+  /* ODONTOGRAM */
+  #odontogram{display:flex;flex-direction:column;gap:4px;align-items:center;padding:12px}
+  .tooth-row{display:flex;gap:3px}
+  .tooth{width:32px;height:38px;border:1.5px solid #ccc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;position:relative;transition:all 0.15s;background:#fff;flex-direction:column;gap:1px;color:var(--muted)}
+  .tooth:hover{border-color:var(--teal);background:var(--teal-light)}
+  .tooth.healthy{background:#fff}
+  .tooth.cavity{background:#FAECE7;border-color:#D85A30}
+  .tooth.filled{background:#E6F1FB;border-color:#185FA5}
+  .tooth.crown{background:#FAEEDA;border-color:#EF9F27}
+  .tooth.extracted{background:#F1EFE8;border-color:#888;opacity:0.5}
+  .tooth.planned{background:#EAF3DE;border-color:#639922}
+  .tooth-num{font-size:8px;color:var(--muted)}
+  .tooth-sym{font-size:13px;line-height:1}
+  .odon-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;justify-content:center}
+  .leg-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)}
+  .leg-dot{width:10px;height:10px;border-radius:2px;border:1px solid rgba(0,0,0,0.1)}
+  
+  /* CALENDAR */
+  .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+  .cal-day-label{font-size:10px;color:var(--muted);padding:4px;font-weight:600;text-transform:uppercase}
+  .cal-day{border:1px solid var(--border);border-radius:6px;padding:6px 2px;min-height:60px;cursor:pointer;transition:all 0.15s;position:relative;font-size:12px}
+  .cal-day:hover{border-color:var(--teal);background:var(--teal-light)}
+  .cal-day.today{border-color:var(--teal);background:var(--teal-light)}
+  .cal-day.has-apt{border-color:var(--blue)}
+  .cal-day-num{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+  .cal-apt-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);margin:1px auto}
+  .time-slots{display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto}
+  .time-slot{display:flex;gap:10px;align-items:center;padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:12px}
+  .time-slot.booked{background:#fff7f5;border-color:#f7c1c1}
+  .time-slot.available{background:#f0fff8;border-color:#9FE1CB;cursor:pointer}.time-slot.available:hover{background:var(--teal-light)}
+  .time-label{width:50px;font-weight:600;color:var(--muted);font-size:11px}
+  
+  /* PROGRESS BAR */
+  .progress-bar{background:#e8eeed;border-radius:4px;height:6px;overflow:hidden;flex:1}
+  .progress-fill{height:100%;border-radius:4px;background:var(--teal);transition:width 0.4s}
+  
+  /* CHART BARS */
+  .bar-chart{display:flex;align-items:flex-end;gap:8px;height:100px;padding:4px 0}
+  .bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+  .bar{width:100%;border-radius:4px 4px 0 0;background:var(--teal-light);border:1px solid var(--teal-mid);transition:height 0.4s;min-height:4px}
+  .bar-label{font-size:9px;color:var(--muted)}
+  .bar-val{font-size:9px;font-weight:600;color:var(--teal)}
+  
+  /* NOTIFICATION BELL */
+  .notif-dot{width:8px;height:8px;border-radius:50%;background:#ef5350;position:absolute;top:-2px;right:-2px;border:2px solid var(--teal)}
+  
+  /* STATUS FLOW */
+  .status-flow{display:flex;align-items:center;gap:0;margin:12px 0;overflow-x:auto}
+  .status-step{padding:6px 14px;font-size:11px;font-weight:600;white-space:nowrap;border:1px solid var(--border);color:var(--muted);background:var(--bg);cursor:pointer;transition:all 0.15s}
+  .status-step:first-child{border-radius:6px 0 0 6px}
+  .status-step:last-child{border-radius:0 6px 6px 0}
+  .status-step:not(:first-child){border-left:none}
+  .status-step.active-step{background:var(--teal);color:#fff;border-color:var(--teal)}
+  
+  /* INVENTORY */
+  .inv-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+  .inv-name{flex:1;font-weight:500}
+  .inv-stock{width:60px;text-align:right;font-weight:700}
+  .inv-low{color:var(--red)}
+  
+  /* MOBILE */
+  @media(max-width:768px){
+    #hamburger{display:block}
+    #sidebar{transform:translateX(-100%)}
+    #sidebar.open{transform:translateX(0)}
+    #main{margin-left:0;padding:12px}
+    .form-grid{grid-template-columns:1fr}
+    .stats-grid{grid-template-columns:1fr 1fr}
+    .cal-grid{grid-template-columns:repeat(7,1fr)}
+    .cal-day{min-height:40px}
+    .page-title{font-size:18px}
+  }
+  @media(max-width:480px){
+    .stats-grid{grid-template-columns:1fr 1fr}
+    #sidebar-overlay{display:block}
+  }
+  #sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:89}
+  #sidebar-overlay.show{display:block}
+  
+  /* MODAL */
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
+  .modal{background:var(--card);border-radius:14px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding:24px}
+  .modal-title{font-size:17px;font-weight:700;margin-bottom:16px;color:var(--text)}
+  .modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+  
+  /* TABS */
+  .tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto}
+  .tab{padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted);white-space:nowrap;transition:all 0.15s}
+  .tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+  .tab:hover:not(.active){color:var(--text)}
+  
+  /* INSURANCE PROGRESS */
+  .ins-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+  .ins-item:last-child{border-bottom:none}
+  
+  select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b7c76'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+
+  .tooth-detail-popup{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:6px 10px;border-radius:6px;font-size:10px;white-space:nowrap;z-index:50;pointer-events:none;opacity:0;transition:opacity 0.15s}
+  .tooth:hover .tooth-detail-popup{opacity:1}
+  
+  .chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11px;background:var(--gray-light);color:var(--gray);margin:2px}
+  
+  .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .dot-green{background:#639922}
+  .dot-amber{background:#EF9F27}
+  .dot-red{background:#E24B4A}
+  .dot-blue{background:#378ADD}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div id="header">
+  <button id="hamburger" onclick="toggleSidebar()">☰</button>
+  <div id="logo">Dent<span>Flow</span> Pro</div>
+  <div id="header-right">
+    <span class="hbadge">🏥 Sunrise Dental Clinic</span>
+    <div class="havatar" title="Dr. Sarah Ahmad">SA</div>
+  </div>
+</div>
+
+<!-- SIDEBAR OVERLAY -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- LAYOUT -->
+<div id="layout">
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">📊</span> Dashboard</div>
+    
+    <div class="nav-section">Patients</div>
+    <div class="nav-item" onclick="showPage('patients')"><span class="nav-icon">👥</span> Patient Records</div>
+    <div class="nav-item" onclick="showPage('emr')"><span class="nav-icon">🦷</span> EMR & Charting</div>
+    
+    <div class="nav-section">Scheduling</div>
+    <div class="nav-item" onclick="showPage('schedule')"><span class="nav-icon">📅</span> Appointments<span class="nav-badge">3</span></div>
+    <div class="nav-item" onclick="showPage('queue')"><span class="nav-icon">⏱️</span> Today's Queue</div>
+    
+    <div class="nav-section">Clinical</div>
+    <div class="nav-item" onclick="showPage('treatment')"><span class="nav-icon">💊</span> Treatment Plans</div>
+    <div class="nav-item" onclick="showPage('billing')"><span class="nav-icon">💳</span> Billing & Insurance</div>
+    
+    <div class="nav-section">Operations</div>
+    <div class="nav-item" onclick="showPage('notifications')"><span class="nav-icon">🔔</span> Notifications<span class="nav-badge">5</span></div>
+    <div class="nav-item" onclick="showPage('inventory')"><span class="nav-icon">📦</span> Inventory</div>
+    <div class="nav-item" onclick="showPage('analytics')"><span class="nav-icon">📈</span> Analytics</div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="main">
+    
+    <!-- ===== DASHBOARD ===== -->
+    <div id="page-dashboard">
+      <div class="page-title">Good morning, Dr. Ahmad 👋</div>
+      <div class="page-sub">Friday, April 17, 2026 — 12 appointments today</div>
+      
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-label">Today's Appointments</div>
+          <div class="stat-value">12</div>
+          <div class="stat-sub">↑ 2 from yesterday</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">New Patients</div>
+          <div class="stat-value">3</div>
+          <div class="stat-sub">↑ 1 this week</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Daily Revenue</div>
+          <div class="stat-value" style="font-size:20px">$4,280</div>
+          <div class="stat-sub">↑ 12% vs avg</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Recall Due</div>
+          <div class="stat-value" style="color:var(--amber)">18</div>
+          <div class="stat-sub">Action needed</div>
+        </div>
+      </div>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px" class="dash-grid">
+        <div class="card">
+          <div class="card-title">📅 Today's Schedule</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;background:var(--teal-light)">
+              <div style="font-size:11px;font-weight:700;color:var(--teal);width:42px">9:00 AM</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600">Maria Hassan</div>
+                <div style="font-size:11px;color:var(--muted)">Root Canal · Chair 2</div>
+              </div>
+              <span class="badge badge-amber">In Chair</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px">
+              <div style="font-size:11px;font-weight:700;color:var(--muted);width:42px">10:30</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600">Ahmed Karimi</div>
+                <div style="font-size:11px;color:var(--muted)">Cleaning · Chair 1</div>
+              </div>
+              <span class="badge badge-blue">Checked In</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px">
+              <div style="font-size:11px;font-weight:700;color:var(--muted);width:42px">11:15</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600">Sara Al-Rawi</div>
+                <div style="font-size:11px;color:var(--muted)">Implant Consult · Chair 3</div>
+              </div>
+              <span class="badge badge-gray">Scheduled</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px">
+              <div style="font-size:11px;font-weight:700;color:var(--muted);width:42px">2:00 PM</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600">Omar Farhat</div>
+                <div style="font-size:11px;color:var(--muted)">Crown Prep · Chair 2</div>
+              </div>
+              <span class="badge badge-gray">Scheduled</span>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm" style="margin-top:12px;width:100%" onclick="showPage('schedule')">View Full Schedule →</button>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">📈 Weekly Revenue</div>
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar" style="height:55px"></div><div class="bar-val">$3.1k</div><div class="bar-label">Mon</div></div>
+            <div class="bar-col"><div class="bar" style="height:75px"></div><div class="bar-val">$4.2k</div><div class="bar-label">Tue</div></div>
+            <div class="bar-col"><div class="bar" style="height:48px"></div><div class="bar-val">$2.7k</div><div class="bar-label">Wed</div></div>
+            <div class="bar-col"><div class="bar" style="height:90px;background:var(--teal);border-color:var(--teal)"></div><div class="bar-val" style="color:var(--text);font-weight:700">$5.1k</div><div class="bar-label">Thu</div></div>
+            <div class="bar-col"><div class="bar" style="height:76px;background:var(--teal-light);border-style:dashed"></div><div class="bar-val">$4.3k</div><div class="bar-label">Fri*</div></div>
+            <div class="bar-col"><div class="bar" style="height:20px"></div><div class="bar-val">$1.1k</div><div class="bar-label">Sat</div></div>
+            <div class="bar-col"><div class="bar" style="height:4px;opacity:0.3"></div><div class="bar-val" style="opacity:0.4">—</div><div class="bar-label">Sun</div></div>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-top:6px">* Today (projected)</div>
+          
+          <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+            <div class="card-title" style="margin-bottom:10px">🔔 Alerts</div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;gap:8px;align-items:center;font-size:12px"><div class="dot dot-amber"></div><span>18 patients due for 6-month recall</span></div>
+              <div style="display:flex;gap:8px;align-items:center;font-size:12px"><div class="dot dot-red"></div><span>Lidocaine stock low (12 units left)</span></div>
+              <div style="display:flex;gap:8px;align-items:center;font-size:12px"><div class="dot dot-red"></div><span>2 outstanding insurance claims ($1,840)</span></div>
+              <div style="display:flex;gap:8px;align-items:center;font-size:12px"><div class="dot dot-blue"></div><span>Ahmed Karimi — no-show yesterday</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">🦷 Clinic Chair Status</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px">
+          <div style="border:2px solid var(--teal);border-radius:10px;padding:14px;text-align:center;background:var(--teal-light)">
+            <div style="font-size:22px">🪑</div>
+            <div style="font-weight:700;margin-top:4px;font-size:13px">Chair 1</div>
+            <div style="font-size:11px;margin-top:4px;color:var(--teal);font-weight:600">In Use</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px">Maria Hassan</div>
+          </div>
+          <div style="border:2px solid var(--blue);border-radius:10px;padding:14px;text-align:center;background:var(--blue-light)">
+            <div style="font-size:22px">🪑</div>
+            <div style="font-weight:700;margin-top:4px;font-size:13px">Chair 2</div>
+            <div style="font-size:11px;margin-top:4px;color:var(--blue);font-weight:600">Ready</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px">Ahmed at 10:30</div>
+          </div>
+          <div style="border:2px solid var(--border);border-radius:10px;padding:14px;text-align:center;background:#fff">
+            <div style="font-size:22px">🪑</div>
+            <div style="font-weight:700;margin-top:4px;font-size:13px">Chair 3</div>
+            <div style="font-size:11px;margin-top:4px;color:var(--muted)">Available</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px">Free until 11:15</div>
+          </div>
+          <div style="border:2px solid #f7c1c1;border-radius:10px;padding:14px;text-align:center;background:#fff7f5">
+            <div style="font-size:22px">🔧</div>
+            <div style="font-weight:700;margin-top:4px;font-size:13px">Chair 4</div>
+            <div style="font-size:11px;margin-top:4px;color:var(--red)">Maintenance</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px">Back tomorrow</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ===== PATIENTS ===== -->
+    <div id="page-patients" class="section-hidden">
+      <div class="page-title">Patient Records</div>
+      <div class="page-sub">Electronic Medical Records — 284 total patients</div>
+      
+      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+        <input class="form-control" style="max-width:280px;flex:1" type="text" placeholder="🔍 Search patients..." oninput="filterPatients(this.value)">
+        <button class="btn btn-primary" onclick="openModal('add-patient-modal')">+ New Patient</button>
+      </div>
+      
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="table-wrap">
+          <table id="patient-table">
+            <thead><tr>
+              <th>Patient</th><th>DOB / Age</th><th>Last Visit</th><th>Next Appt</th><th>Balance</th><th>Status</th><th></th>
+            </tr></thead>
+            <tbody id="patient-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ===== EMR ===== -->
+    <div id="page-emr" class="section-hidden">
+      <div class="page-title">EMR & Digital Charting</div>
+      <div class="page-sub">Maria Hassan — DOB: 1985-03-14 · MRN: #00312</div>
+      
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab(this,'emr')">🦷 Odontogram</div>
+        <div class="tab" onclick="switchTab(this,'emr')">📋 Medical History</div>
+        <div class="tab" onclick="switchTab(this,'emr')">🩻 X-Rays & Images</div>
+        <div class="tab" onclick="switchTab(this,'emr')">📝 Notes</div>
+      </div>
+      
+      <div id="emr-tab-0">
+        <div class="card">
+          <div class="card-title">Interactive Odontogram</div>
+          <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+            <span style="font-size:12px;color:var(--muted)">Click a tooth to change status:</span>
+            <select id="tooth-status-select" class="form-control" style="max-width:160px;padding:4px 8px;font-size:12px">
+              <option value="healthy">Healthy</option>
+              <option value="cavity">Cavity</option>
+              <option value="filled">Filled/Restored</option>
+              <option value="crown">Crown</option>
+              <option value="extracted">Extracted</option>
+              <option value="planned">Planned Tx</option>
+            </select>
+          </div>
+          <div id="odontogram"></div>
+          <div class="odon-legend">
+            <div class="leg-item"><div class="leg-dot" style="background:#fff;border-color:#ccc"></div>Healthy</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#FAECE7;border-color:#D85A30"></div>Cavity</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#E6F1FB;border-color:#185FA5"></div>Filled</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#FAEEDA;border-color:#EF9F27"></div>Crown</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#F1EFE8;border-color:#888;opacity:0.5"></div>Extracted</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#EAF3DE;border-color:#639922"></div>Planned</div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="emr-tab-1" class="section-hidden">
+        <div class="card">
+          <div class="card-title">Medical History</div>
+          <div class="form-grid">
+            <div>
+              <div class="form-label">Allergies</div>
+              <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px">
+                <span class="chip" style="background:#FCEBEB;color:var(--red)">⚠ Penicillin</span>
+                <span class="chip" style="background:#FCEBEB;color:var(--red)">⚠ Latex</span>
+                <button class="btn btn-sm btn-outline" style="padding:3px 8px;font-size:11px">+ Add</button>
+              </div>
+              <div class="form-label">Chronic Conditions</div>
+              <div style="display:flex;flex-wrap:wrap;gap:4px">
+                <span class="chip">Hypertension</span>
+                <span class="chip">Type 2 Diabetes</span>
+                <button class="btn btn-sm btn-outline" style="padding:3px 8px;font-size:11px">+ Add</button>
+              </div>
+            </div>
+            <div>
+              <div class="form-label">Current Medications</div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="font-size:13px;padding:6px;border-radius:6px;background:var(--bg)">💊 Metformin 500mg — twice daily</div>
+                <div style="font-size:13px;padding:6px;border-radius:6px;background:var(--bg)">💊 Lisinopril 10mg — once daily</div>
+                <button class="btn btn-sm btn-outline" style="align-self:start">+ Medication</button>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:14px;padding:12px;border-radius:8px;background:#fff7f5;border:1px solid #f7c1c1">
+            <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px">⚠ Anesthesia Note</div>
+            <div style="font-size:12px;color:var(--red)">Patient is allergic to Penicillin. Use Azithromycin for prophylaxis. Monitor blood sugar pre/post procedure due to diabetes.</div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="emr-tab-2" class="section-hidden">
+        <div class="card">
+          <div class="card-title">X-Rays & Clinical Images</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">
+            <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer" onclick="alert('DICOM viewer would open here')">
+              <div style="background:#1a2420;height:100px;display:flex;align-items:center;justify-content:center;font-size:28px">🩻</div>
+              <div style="padding:8px;font-size:11px">
+                <div style="font-weight:600">Panoramic OPG</div>
+                <div style="color:var(--muted)">Jan 15, 2026</div>
+                <div style="color:var(--blue);font-size:10px;margin-top:2px">View in DICOM</div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer">
+              <div style="background:#2a1a1a;height:100px;display:flex;align-items:center;justify-content:center;font-size:28px">🩻</div>
+              <div style="padding:8px;font-size:11px">
+                <div style="font-weight:600">Periapical #18</div>
+                <div style="color:var(--muted)">Jan 15, 2026</div>
+                <div style="color:var(--blue);font-size:10px;margin-top:2px">View in DICOM</div>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden">
+              <div style="background:var(--bg);height:100px;display:flex;align-items:center;justify-content:center;font-size:28px">📷</div>
+              <div style="padding:8px;font-size:11px">
+                <div style="font-weight:600">Before Photo</div>
+                <div style="color:var(--muted)">Oct 2025</div>
+              </div>
+            </div>
+            <div style="border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;min-height:130px;cursor:pointer;background:var(--bg)" onclick="alert('Upload dialog would open')">
+              <div style="font-size:24px">⬆️</div>
+              <div style="font-size:11px;color:var(--muted)">Upload Image</div>
+              <div style="font-size:10px;color:var(--muted)">DICOM, JPG, PNG</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="emr-tab-3" class="section-hidden">
+        <div class="card">
+          <div class="card-title">Clinical Notes</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="border-left:3px solid var(--teal);padding:10px 12px;background:var(--teal-light);border-radius:0 8px 8px 0">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Apr 17, 2026 — Dr. Ahmad</div>
+              <div style="font-size:13px">Patient presents with pain in lower left quadrant. Tooth #18 shows periapical abscess on X-ray. Root canal treatment recommended. Patient consented. Anesthesia: Articaine (avoiding penicillin-based antibiotics due to allergy).</div>
+            </div>
+            <div style="border-left:3px solid var(--border);padding:10px 12px;background:var(--bg);border-radius:0 8px 8px 0">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Oct 14, 2025 — Dr. Ahmad</div>
+              <div style="font-size:13px">Routine 6-month checkup. 2 cavities noted on teeth #14 and #16. Discussed treatment plan and phased approach. Patient agreed to start Phase 1 in January.</div>
+            </div>
+          </div>
+          <textarea class="form-control" placeholder="Add new note..." style="margin-top:12px;min-height:80px;resize:vertical"></textarea>
+          <div style="display:flex;justify-content:flex-end;margin-top:8px">
+            <button class="btn btn-primary btn-sm">Save Note</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ===== SCHEDULE ===== -->
+    <div id="page-schedule" class="section-hidden">
+      <div class="page-title">Appointment Scheduling</div>
+      <div class="page-sub">Intelligent conflict-free scheduling</div>
+      
+      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-primary" onclick="openModal('new-apt-modal')">+ New Appointment</button>
+        <div style="display:flex;gap:4px;margin-left:auto">
+          <button class="btn btn-outline btn-sm" onclick="setCalView('day')" id="view-day">Day</button>
+          <button class="btn btn-sm" style="background:var(--teal);color:#fff" id="view-week">Week</button>
+          <button class="btn btn-outline btn-sm" id="view-month">Month</button>
+        </div>
+      </div>
+      
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:16px" class="sched-grid">
+        <div class="card">
+          <div class="cal-header">
+            <button class="btn btn-outline btn-sm">← Prev</button>
+            <div style="font-size:15px;font-weight:700">April 2026</div>
+            <button class="btn btn-outline btn-sm">Next →</button>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-day-label">Sun</div><div class="cal-day-label">Mon</div>
+            <div class="cal-day-label">Tue</div><div class="cal-day-label">Wed</div>
+            <div class="cal-day-label">Thu</div><div class="cal-day-label">Fri</div>
+            <div class="cal-day-label">Sat</div>
+          </div>
+          <div class="cal-grid" id="calendar-grid" style="margin-top:4px"></div>
+        </div>
+        
+        <div>
+          <div class="card" style="margin-bottom:12px">
+            <div class="card-title" id="slot-title">Friday, April 17</div>
+            <div class="time-slots" id="time-slots"></div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">⚠ Conflict Rules</div>
+            <div style="font-size:12px;display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;gap:6px"><div class="dot dot-green"></div>Chair 1 — Available</div>
+              <div style="display:flex;gap:6px"><div class="dot dot-amber"></div>Chair 2 — Root Canal (9-10:30)</div>
+              <div style="display:flex;gap:6px"><div class="dot dot-green"></div>Chair 3 — Available</div>
+              <div style="display:flex;gap:6px"><div class="dot dot-red"></div>Chair 4 — Maintenance all day</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ===== QUEUE ===== -->
+    <div id="page-queue" class="section-hidden">
+      <div class="page-title">Today's Patient Queue</div>
+      <div class="page-sub">Live clinic flow — April 17, 2026</div>
+      
+      <div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto">
+        <div style="background:var(--teal-light);color:var(--teal);border-radius:8px;padding:8px 14px;text-align:center;min-width:100px">
+          <div style="font-size:22px;font-weight:700">1</div>
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase">In Chair</div>
+        </div>
+        <div style="background:var(--blue-light);color:var(--blue);border-radius:8px;padding:8px 14px;text-align:center;min-width:100px">
+          <div style="font-size:22px;font-weight:700">2</div>
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase">Checked In</div>
+        </div>
+        <div style="background:var(--gray-light);color:var(--gray);border-radius:8px;padding:8px 14px;text-align:center;min-width:100px">
+          <div style="font-size:22px;font-weight:700">5</div>
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase">Upcoming</div>
+        </div>
+        <div style="background:var(--green-light);color:var(--green);border-radius:8px;padding:8px 14px;text-align:center;min-width:100px">
+          <div style="font-size:22px;font-weight:700">4</div>
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase">Completed</div>
+        </div>
+      </div>
+      
+      <div class="card" style="padding:0;overflow:hidden">
+        <table>
+          <thead><tr><th>Time</th><th>Patient</th><th>Procedure</th><th>Chair</th><th>Duration</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="font-size:12px;font-weight:700">8:00 AM</td>
+              <td><div style="font-weight:600;font-size:13px">Layla Mansour</div><div style="font-size:11px;color:var(--muted)">#00241</div></td>
+              <td style="font-size:12px">Scaling & Polishing</td>
+              <td><span class="badge badge-teal">Chair 1</span></td>
+              <td style="font-size:12px">45 min</td>
+              <td><span class="badge badge-green">Completed</span></td>
+              <td><button class="btn btn-sm btn-outline" onclick="showPage('billing')">Bill</button></td>
+            </tr>
+            <tr style="background:#fff7f0">
+              <td style="font-size:12px;font-weight:700">9:00 AM</td>
+              <td><div style="font-weight:600;font-size:13px">Maria Hassan</div><div style="font-size:11px;color:var(--muted)">#00312</div></td>
+              <td style="font-size:12px">Root Canal #18</td>
+              <td><span class="badge badge-teal">Chair 2</span></td>
+              <td style="font-size:12px">90 min</td>
+              <td><span class="badge badge-amber">In Chair</span></td>
+              <td>
+                <div class="status-flow" style="margin:0">
+                  <div class="status-step active-step">In Chair</div>
+                  <div class="status-step" onclick="updateStatus(this,'Done')">Complete</div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;font-weight:700">10:30 AM</td>
+              <td><div style="font-weight:600;font-size:13px">Ahmed Karimi</div><div style="font-size:11px;color:var(--muted)">#00198</div></td>
+              <td style="font-size:12px">Cleaning + Exam</td>
+              <td><span class="badge badge-blue">Chair 1</span></td>
+              <td style="font-size:12px">60 min</td>
+              <td><span class="badge badge-blue">Checked In</span></td>
+              <td>
+                <div class="status-flow" style="margin:0">
+                  <div class="status-step active-step">Checked In</div>
+                  <div class="status-step" onclick="updateStatus(this,'Chair')">To Chair</div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;font-weight:700">11:15 AM</td>
+              <td><div style="font-weight:600;font-size:13px">Sara Al-Rawi</div><div style="font-size:11px;color:var(--muted)">#00405</div></td>
+              <td style="font-size:12px">Implant Consultation</td>
+              <td><span class="badge badge-gray">Chair 3</span></td>
+              <td style="font-size:12px">30 min</td>
+              <td><span class="badge badge-gray">Scheduled</span></td>
+              <td><button class="btn btn-sm" style="background:var(--blue-light);color:var(--blue);font-size:11px" onclick="this.closest('tr').querySelector('.badge').outerHTML='<span class=\'badge badge-blue\'>Checked In</span>'">Check In</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- ===== TREATMENT ===== -->
+    <div id="page-treatment" class="section-hidden">
+      <div class="page-title">Treatment Plans</div>
+      <div class="page-sub">Phased treatment planning with cost estimates</div>
+      
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div>
+            <div style="font-size:15px;font-weight:700">Maria Hassan — Treatment Plan #TP-0041</div>
+            <div style="font-size:12px;color:var(--muted)">Created: Jan 15, 2026 · Dr. Ahmad · Estimated Total: $4,800</div>
+          </div>
+          <span class="badge badge-amber">In Progress</span>
+        </div>
+        
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <!-- Phase 1 -->
+          <div style="border:1px solid #9FE1CB;border-radius:10px;overflow:hidden">
+            <div style="background:var(--teal-light);padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
+              <div style="font-weight:700;font-size:13px;color:var(--teal)">Phase 1 — Urgent Care</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="badge badge-green">Completed</span>
+                <span style="font-size:12px;font-weight:700;color:var(--teal)">$1,200</span>
+              </div>
+            </div>
+            <div style="padding:12px 14px">
+              <table style="width:100%;font-size:12px">
+                <tr><td style="padding:4px 0">✅ Extraction — Tooth #19</td><td style="text-align:right;color:var(--muted)">$300</td></tr>
+                <tr><td style="padding:4px 0">✅ Composite Filling — Tooth #14</td><td style="text-align:right;color:var(--muted)">$450</td></tr>
+                <tr><td style="padding:4px 0">✅ Deep Scaling (4 quadrants)</td><td style="text-align:right;color:var(--muted)">$450</td></tr>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Phase 2 -->
+          <div style="border:1px solid var(--amber-light);border-radius:10px;overflow:hidden">
+            <div style="background:var(--amber-light);padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
+              <div style="font-weight:700;font-size:13px;color:var(--amber)">Phase 2 — Restorations</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="badge badge-amber">In Progress</span>
+                <span style="font-size:12px;font-weight:700;color:var(--amber)">$2,400</span>
+              </div>
+            </div>
+            <div style="padding:12px 14px">
+              <table style="width:100%;font-size:12px">
+                <tr><td style="padding:4px 0">🔄 Root Canal — Tooth #18 (Today)</td><td style="text-align:right;color:var(--amber)">$1,200</td></tr>
+                <tr><td style="padding:4px 0">⬜ Porcelain Crown — Tooth #18</td><td style="text-align:right;color:var(--muted)">$1,200</td></tr>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Phase 3 -->
+          <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden">
+            <div style="background:var(--bg);padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
+              <div style="font-weight:700;font-size:13px;color:var(--muted)">Phase 3 — Implant (Future)</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="badge badge-gray">Planned</span>
+                <span style="font-size:12px;font-weight:700;color:var(--muted)">$1,200</span>
+              </div>
+            </div>
+            <div style="padding:12px 14px">
+              <table style="width:100%;font-size:12px;color:var(--muted)">
+                <tr><td style="padding:4px 0">⬜ Implant — Site #19</td><td style="text-align:right">$1,200</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;padding:12px;border-radius:8px;background:var(--bg);display:flex;justify-content:space-between;font-size:13px;align-items:center;flex-wrap:wrap;gap:8px">
+          <div style="display:flex;gap:16px">
+            <div><div style="color:var(--muted);font-size:11px">Total Estimate</div><div style="font-weight:700;font-size:16px">$4,800</div></div>
+            <div><div style="color:var(--muted);font-size:11px">Paid</div><div style="font-weight:700;font-size:16px;color:var(--green)">$1,200</div></div>
+            <div><div style="color:var(--muted);font-size:11px">Outstanding</div><div style="font-weight:700;font-size:16px;color:var(--amber)">$3,600</div></div>
+          </div>
+          <button class="btn btn-primary btn-sm">+ Add Phase</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ===== BILLING ===== -->
+    <div id="page-billing" class="section-hidden">
+      <div class="page-title">Billing & Insurance</div>
+      <div class="page-sub">Invoicing, payments, and insurance claims</div>
+      
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">
+        <div class="stat"><div class="stat-label">Today's Revenue</div><div class="stat-value" style="font-size:20px">$4,280</div></div>
+        <div class="stat"><div class="stat-label">Outstanding</div><div class="stat-value" style="font-size:20px;color:var(--amber)">$6,840</div></div>
+        <div class="stat"><div class="stat-label">Pending Claims</div><div class="stat-value" style="font-size:20px;color:var(--blue)">7</div></div>
+        <div class="stat"><div class="stat-label">Overdue (30d+)</div><div class="stat-value" style="font-size:20px;color:var(--red)">$1,240</div></div>
+      </div>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" class="bill-grid">
+        <div class="card">
+          <div class="card-title">Recent Invoices</div>
+          <div class="table-wrap">
+            <table style="font-size:12px">
+              <thead><tr><th>Patient</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Layla Mansour</td><td>$380</td><td>Today</td><td><span class="badge badge-green">Paid</span></td></tr>
+                <tr><td>Maria Hassan</td><td>$1,200</td><td>Today</td><td><span class="badge badge-amber">Pending</span></td></tr>
+                <tr><td>Omar Farhat</td><td>$950</td><td>Apr 15</td><td><span class="badge badge-blue">Insurance</span></td></tr>
+                <tr><td>Nour Saleh</td><td>$220</td><td>Apr 14</td><td><span class="badge badge-green">Paid</span></td></tr>
+                <tr><td>Khalid Issa</td><td>$1,450</td><td>Apr 12</td><td><span class="badge badge-red">Overdue</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:12px">+ New Invoice</button>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Insurance Claims</div>
+          <div style="display:flex;flex-direction:column;gap:0">
+            <div class="ins-item">
+              <div>
+                <div style="font-weight:600;font-size:13px">Omar Farhat</div>
+                <div style="font-size:11px;color:var(--muted)">AXA Insurance · Crown #14</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-weight:700;font-size:13px">$950</div>
+                <span class="badge badge-amber" style="font-size:10px">Submitted</span>
+              </div>
+            </div>
+            <div class="ins-item">
+              <div>
+                <div style="font-weight:600;font-size:13px">Sana Khalil</div>
+                <div style="font-size:11px;color:var(--muted)">MetLife · Root Canal</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-weight:700;font-size:13px">$890</div>
+                <span class="badge badge-green" style="font-size:10px">Approved</span>
+              </div>
+            </div>
+            <div class="ins-item">
+              <div>
+                <div style="font-weight:600;font-size:13px">Hadi Musa</div>
+                <div style="font-size:11px;color:var(--muted)">BUPA · Implant</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-weight:700;font-size:13px">$1,800</div>
+                <span class="badge badge-red" style="font-size:10px">Rejected</span>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm" style="margin-top:12px;width:100%">Submit New Claim</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ===== NOTIFICATIONS ===== -->
+    <div id="page-notifications" class="section-hidden">
+      <div class="page-title">Notifications & Recall</div>
+      <div class="page-sub">Automated follow-ups and multi-channel alerts</div>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px" class="notif-grid">
+        <div class="card">
+          <div class="card-title">📲 Send Reminder</div>
+          <div class="form-group">
+            <label class="form-label">Patient</label>
+            <select class="form-control"><option>Ahmed Karimi</option><option>Maria Hassan</option><option>Omar Farhat</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Channel</label>
+            <div style="display:flex;gap:8px">
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="radio" name="channel" value="sms" checked> SMS</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="radio" name="channel" value="email"> Email</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="radio" name="channel" value="whatsapp"> WhatsApp</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Template</label>
+            <select class="form-control" onchange="updateTemplate(this)">
+              <option>Appointment Reminder</option>
+              <option>No-Show Follow-Up</option>
+              <option>6-Month Recall</option>
+              <option>Post-Procedure Check-In</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message Preview</label>
+            <textarea class="form-control" id="msg-preview" style="min-height:80px;font-size:12px">Hi Ahmed, this is a reminder from Sunrise Dental Clinic. Your appointment is tomorrow, Apr 17 at 10:30 AM. Reply CONFIRM to confirm or CANCEL to reschedule. Dr. Ahmad's team.</textarea>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="alert('Message sent via SMS to +964-XXX-XXXX')">Send Message ↗</button>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">⏰ Recall Queue (18 patients)</div>
+          <div style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:8px;border-radius:8px;background:var(--red-light)">
+              <div><div style="font-weight:600">Khalid Issa</div><div style="color:var(--muted)">Last visit: Oct 2025 · 6mo recall</div></div>
+              <button class="btn btn-sm btn-primary" style="font-size:11px">Send</button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:8px;border-radius:8px;background:var(--amber-light)">
+              <div><div style="font-weight:600">Nour Saleh</div><div style="color:var(--muted)">Last visit: Nov 2025 · 6mo recall</div></div>
+              <button class="btn btn-sm btn-primary" style="font-size:11px">Send</button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:8px;border-radius:8px;background:var(--amber-light)">
+              <div><div style="font-weight:600">Hana Al-Ali</div><div style="color:var(--muted)">Last visit: Nov 2025 · Post-surgery</div></div>
+              <button class="btn btn-sm btn-primary" style="font-size:11px">Send</button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:8px;border-radius:8px">
+              <div><div style="font-weight:600">Sana Khalil</div><div style="color:var(--muted)">Last visit: Dec 2025 · 6mo recall</div></div>
+              <button class="btn btn-sm btn-outline" style="font-size:11px">Send</button>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm" style="margin-top:10px;width:100%">Send All Recalls (18)</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ===== INVENTORY ===== -->
+    <div id="page-inventory" class="section-hidden">
+      <div class="page-title">Inventory Management</div>
+      <div class="page-sub">Consumables tracking and low-stock alerts</div>
+      
+      <div class="stats-grid">
+        <div class="stat"><div class="stat-label">Total Items</div><div class="stat-value">47</div></div>
+        <div class="stat"><div class="stat-label">Low Stock</div><div class="stat-value" style="color:var(--red)">4</div></div>
+        <div class="stat"><div class="stat-label">On Order</div><div class="stat-value" style="color:var(--blue)">2</div></div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">Consumables Stock</div>
+        <div id="inventory-list"></div>
+      </div>
+    </div>
+    
+    <!-- ===== ANALYTICS ===== -->
+    <div id="page-analytics" class="section-hidden">
+      <div class="page-title">Analytics & Insights</div>
+      <div class="page-sub">Performance overview — April 2026</div>
+      
+      <div class="stats-grid">
+        <div class="stat"><div class="stat-label">Monthly Revenue</div><div class="stat-value" style="font-size:18px">$42,180</div><div class="stat-sub">↑ 8% vs March</div></div>
+        <div class="stat"><div class="stat-label">Total Appointments</div><div class="stat-value">189</div><div class="stat-sub">↑ 14 more</div></div>
+        <div class="stat"><div class="stat-label">New Patients</div><div class="stat-value">24</div><div class="stat-sub">↑ 4 vs last month</div></div>
+        <div class="stat"><div class="stat-label">No-Show Rate</div><div class="stat-value" style="color:var(--amber)">7%</div><div class="stat-sub">↓ Improving</div></div>
+      </div>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" class="analytics-grid">
+        <div class="card">
+          <div class="card-title">Revenue by Procedure (April)</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>Root Canals</span><span style="font-weight:700">$12,400</span></div><div class="progress-bar"><div class="progress-fill" style="width:95%"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>Crowns & Bridges</span><span style="font-weight:700">$9,800</span></div><div class="progress-bar"><div class="progress-fill" style="width:75%;background:var(--blue)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>Implants</span><span style="font-weight:700">$8,200</span></div><div class="progress-bar"><div class="progress-fill" style="width:63%;background:var(--amber)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>Cleanings</span><span style="font-weight:700">$5,600</span></div><div class="progress-bar"><div class="progress-fill" style="width:43%;background:var(--green)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>Orthodontics</span><span style="font-weight:700">$4,100</span></div><div class="progress-bar"><div class="progress-fill" style="width:32%;background:var(--gray)"></div></div></div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Patient Metrics</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="padding:14px;border-radius:10px;background:var(--teal-light);text-align:center">
+              <div style="font-size:26px;font-weight:700;color:var(--teal)">68%</div>
+              <div style="font-size:11px;color:var(--teal);font-weight:600;margin-top:4px">Returning Patients</div>
+            </div>
+            <div style="padding:14px;border-radius:10px;background:var(--blue-light);text-align:center">
+              <div style="font-size:26px;font-weight:700;color:var(--blue)">32%</div>
+              <div style="font-size:11px;color:var(--blue);font-weight:600;margin-top:4px">New Patients</div>
+            </div>
+            <div style="padding:14px;border-radius:10px;background:var(--green-light);text-align:center">
+              <div style="font-size:26px;font-weight:700;color:var(--green)">4.8⭐</div>
+              <div style="font-size:11px;color:var(--green);font-weight:600;margin-top:4px">Patient Rating</div>
+            </div>
+            <div style="padding:14px;border-radius:10px;background:var(--amber-light);text-align:center">
+              <div style="font-size:26px;font-weight:700;color:var(--amber)">47 min</div>
+              <div style="font-size:11px;color:var(--amber);font-weight:600;margin-top:4px">Avg Visit Time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- MODALS -->
+<div id="add-patient-modal" style="display:none" class="modal-bg" onclick="if(event.target===this)closeModal('add-patient-modal')">
+  <div class="modal">
+    <div class="modal-title">Add New Patient</div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">First Name</label><input class="form-control" placeholder="First name"></div>
+      <div class="form-group"><label class="form-label">Last Name</label><input class="form-control" placeholder="Last name"></div>
+      <div class="form-group"><label class="form-label">Date of Birth</label><input class="form-control" type="date"></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-control" placeholder="+964-XXX-XXXX"></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-control" placeholder="email@example.com"></div>
+      <div class="form-group"><label class="form-label">Insurance</label><select class="form-control"><option>None</option><option>AXA</option><option>BUPA</option><option>MetLife</option></select></div>
+    </div>
+    <div class="form-group"><label class="form-label">Known Allergies</label><input class="form-control" placeholder="e.g. Penicillin, Latex"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('add-patient-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="addPatient()">Add Patient</button>
+    </div>
+  </div>
+</div>
+
+<div id="new-apt-modal" style="display:none" class="modal-bg" onclick="if(event.target===this)closeModal('new-apt-modal')">
+  <div class="modal">
+    <div class="modal-title">New Appointment</div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">Patient</label><select class="form-control"><option>Maria Hassan</option><option>Ahmed Karimi</option><option>Omar Farhat</option><option>Sara Al-Rawi</option></select></div>
+      <div class="form-group"><label class="form-label">Procedure</label><select class="form-control" onchange="updateDuration(this)"><option value="15">Check-up (15 min)</option><option value="45">Cleaning (45 min)</option><option value="60">Filling (60 min)</option><option value="90">Root Canal (90 min)</option><option value="120">Implant (120 min)</option></select></div>
+      <div class="form-group"><label class="form-label">Date</label><input class="form-control" type="date" value="2026-04-17"></div>
+      <div class="form-group"><label class="form-label">Time</label><select class="form-control"><option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>2:00 PM</option><option>3:00 PM</option></select></div>
+      <div class="form-group"><label class="form-label">Chair</label><select class="form-control"><option>Chair 1</option><option>Chair 2</option><option>Chair 3</option></select></div>
+      <div class="form-group"><label class="form-label">Duration</label><input class="form-control" id="apt-duration" value="15 minutes" readonly></div>
+    </div>
+    <div id="conflict-warning" style="display:none;padding:10px;background:var(--red-light);border-radius:8px;font-size:12px;color:var(--red);margin-bottom:10px">⚠ Conflict detected! Chair 2 is occupied 9:00-10:30 AM. Please choose another chair or time.</div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('new-apt-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="bookAppointment()">Book Appointment</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// DATA
+const patients = [
+  {id:'#00312',name:'Maria Hassan',dob:'1985-03-14',age:41,last:'Apr 17, 2026',next:'May 20, 2026',balance:'$3,600',status:'active'},
+  {id:'#00198',name:'Ahmed Karimi',dob:'1990-07-22',age:35,last:'Apr 16, 2026',next:'Apr 17, 2026',balance:'$0',status:'active'},
+  {id:'#00405',name:'Sara Al-Rawi',dob:'1978-11-05',age:47,last:'Jan 10, 2026',next:'Apr 17, 2026',balance:'$220',status:'active'},
+  {id:'#00241',name:'Layla Mansour',dob:'2001-05-18',age:24,last:'Apr 17, 2026',next:'Oct 17, 2026',balance:'$0',status:'active'},
+  {id:'#00156',name:'Omar Farhat',dob:'1968-08-30',age:57,last:'Apr 15, 2026',next:'Apr 17, 2026',balance:'$950',status:'insurance'},
+  {id:'#00089',name:'Khalid Issa',dob:'1955-01-12',age:71,last:'Oct 2025',next:'Overdue',balance:'$1,450',status:'overdue'},
+  {id:'#00334',name:'Nour Saleh',dob:'1995-09-03',age:30,last:'Nov 2025',next:'Recall Due',balance:'$0',status:'recall'},
+];
+
+const inventory = [
+  {name:'Lidocaine Cartridges',unit:'cartridges',stock:12,min:30,max:100},
+  {name:'Composite Resin A2',unit:'syringes',stock:8,min:10,max:40},
+  {name:'Examination Gloves (M)',unit:'boxes',stock:45,min:20,max:100},
+  {name:'Sodium Hypochlorite',unit:'liters',stock:2,min:5,max:20},
+  {name:'Dental Floss (Patient)',unit:'packs',stock:120,min:50,max:200},
+  {name:'X-Ray Film',unit:'packs',stock:15,min:10,max:50},
+  {name:'Articulating Paper',unit:'boxes',stock:6,min:5,max:20},
+  {name:'Calcium Hydroxide',unit:'units',stock:4,min:10,max:30},
+  {name:'Disposable Masks',unit:'boxes',stock:28,min:20,max:80},
+  {name:'3M Scotchbond',unit:'bottles',stock:7,min:5,max:15},
+];
+
+const toothData = {};
+const toothUpper = [18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28];
+const toothLower = [48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38];
+const presetConditions = {18:'cavity',14:'filled',19:'extracted',16:'planned',11:'crown'};
+
+// NAV
+function showPage(id){
+  document.querySelectorAll('[id^="page-"]').forEach(p=>p.classList.add('section-hidden'));
+  document.getElementById('page-'+id).classList.remove('section-hidden');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  event.currentTarget && event.currentTarget.classList.add('active');
+  closeSidebar();
+  if(id==='patients')renderPatients();
+  if(id==='emr')renderOdontogram();
+  if(id==='schedule')renderCalendar();
+  if(id==='inventory')renderInventory();
+}
+
+// SIDEBAR
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('show');
+}
+
+// MODAL
+function openModal(id){document.getElementById(id).style.display='flex'}
+function closeModal(id){document.getElementById(id).style.display='none'}
+
+// PATIENTS
+function renderPatients(data){
+  data = data || patients;
+  const tbody = document.getElementById('patient-tbody');
+  tbody.innerHTML = data.map(p=>{
+    const statusBadge = p.status==='overdue'?'badge-red':p.status==='recall'?'badge-amber':p.status==='insurance'?'badge-blue':'badge-green';
+    const statusText = p.status==='overdue'?'Overdue':p.status==='recall'?'Recall Due':p.status==='insurance'?'Insurance':'Active';
+    return `<tr>
+      <td><div style="display:flex;align-items:center;gap:8px">
+        <div class="pat-avatar">${p.name.split(' ').map(n=>n[0]).join('')}</div>
+        <div><div style="font-weight:600;font-size:13px">${p.name}</div><div style="font-size:11px;color:var(--muted)">${p.id}</div></div>
+      </div></td>
+      <td style="font-size:12px">${p.dob}<br><span style="color:var(--muted)">${p.age} yrs</span></td>
+      <td style="font-size:12px">${p.last}</td>
+      <td style="font-size:12px">${p.next}</td>
+      <td style="font-size:13px;font-weight:600;color:${p.balance==='$0'?'var(--green)':'var(--amber)'}">${p.balance}</td>
+      <td><span class="badge ${statusBadge}">${statusText}</span></td>
+      <td style="display:flex;gap:4px;padding:8px 12px">
+        <button class="btn btn-sm btn-outline" onclick="showPage('emr')">Chart</button>
+        <button class="btn btn-sm btn-outline" onclick="showPage('treatment')">Plan</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function filterPatients(q){
+  renderPatients(patients.filter(p=>p.name.toLowerCase().includes(q.toLowerCase())||p.id.includes(q)));
+}
+
+function addPatient(){closeModal('add-patient-modal');alert('Patient added successfully!')}
+
+// ODONTOGRAM
+function renderOdontogram(){
+  Object.assign(toothData,presetConditions);
+  const container = document.getElementById('odontogram');
+  container.innerHTML='';
+  const symbols = {healthy:'',cavity:'●',filled:'◈',crown:'♛',extracted:'✕',planned:'+'};
+  [toothUpper,toothLower].forEach((row,i)=>{
+    const div = document.createElement('div');
+    div.className='tooth-row';
+    div.style.marginBottom = i===0?'6px':'0';
+    row.forEach(n=>{
+      const t = document.createElement('div');
+      t.className='tooth '+(toothData[n]||'healthy');
+      t.innerHTML=`<span class="tooth-num">${n}</span><span class="tooth-sym">${symbols[toothData[n]||'healthy']}</span>`;
+      t.title=`Tooth ${n}: ${toothData[n]||'Healthy'}`;
+      t.onclick=()=>{
+        const sel = document.getElementById('tooth-status-select').value;
+        toothData[n]=sel;
+        t.className='tooth '+sel;
+        t.querySelector('.tooth-sym').textContent=symbols[sel]||'';
+      };
+      div.appendChild(t);
+    });
+    container.appendChild(div);
+  });
+}
+
+// TABS
+function switchTab(el,page){
+  const parent = el.parentElement;
+  const tabs = parent.querySelectorAll('.tab');
+  tabs.forEach((t,i)=>{
+    t.classList.remove('active');
+    const content = document.getElementById(`${page}-tab-${i}`);
+    if(content) content.classList.add('section-hidden');
+  });
+  el.classList.add('active');
+  const idx = Array.from(tabs).indexOf(el);
+  const active = document.getElementById(`${page}-tab-${idx}`);
+  if(active) active.classList.remove('section-hidden');
+}
+
+// CALENDAR
+function renderCalendar(){
+  const grid = document.getElementById('calendar-grid');
+  const slotContainer = document.getElementById('time-slots');
+  const appointments = {17:[9,10,11],15:[14],16:[9,10],18:[9,11],14:[10]};
+  
+  let html='';
+  for(let i=1;i<=5;i++) html+=`<div class="cal-day"></div>`;// empty prefix for April 2026 (Wed start=3 blanks, but simplify)
+  
+  grid.innerHTML='';
+  for(let d=1;d<=30;d++){
+    const div=document.createElement('div');
+    div.className='cal-day'+(d===17?' today':'')+(appointments[d]?' has-apt':'');
+    div.innerHTML=`<div class="cal-day-num">${d}</div>${(appointments[d]||[]).map(()=>`<div class="cal-apt-dot"></div>`).join('')}`;
+    div.onclick=()=>{
+      document.getElementById('slot-title').textContent=`April ${d}, 2026`;
+      renderTimeSlots(slotContainer,appointments[d]||[]);
+    };
+    grid.appendChild(div);
+  }
+  renderTimeSlots(slotContainer,[9,10,11]);
+}
+
+function renderTimeSlots(container,booked){
+  const times=['8:00','9:00','10:00','10:30','11:00','11:30','12:00','1:00','2:00','3:00','4:00','5:00'];
+  container.innerHTML=times.map(t=>{
+    const h=parseInt(t);
+    const isBooked=booked.includes(h);
+    return `<div class="time-slot ${isBooked?'booked':'available'}">
+      <span class="time-label">${t} ${h<12?'AM':'PM'}</span>
+      <span style="flex:1;font-size:11px">${isBooked?'<span style="color:var(--red)">Booked</span>':'<span style="color:var(--teal)">Available</span>'}</span>
+      ${!isBooked?`<button class="btn btn-sm btn-primary" style="font-size:10px;padding:3px 8px" onclick="openModal('new-apt-modal')">Book</button>`:''}
+    </div>`;
+  }).join('');
+}
+
+// INVENTORY
+function renderInventory(){
+  const container = document.getElementById('inventory-list');
+  container.innerHTML=inventory.map(item=>{
+    const pct=Math.round((item.stock/item.max)*100);
+    const low=item.stock<item.min;
+    return `<div class="inv-row">
+      <span class="inv-name">${item.name}${low?` <span class="badge badge-red" style="font-size:9px">LOW</span>`:''}
+        <div style="font-size:10px;color:var(--muted)">Min: ${item.min} ${item.unit}</div>
+      </span>
+      <div style="flex:1;margin:0 12px"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${low?'var(--red)':pct<50?'var(--amber)':'var(--teal)'}"></div></div></div>
+      <span class="inv-stock ${low?'inv-low':''}">${item.stock}<span style="font-size:10px;color:var(--muted);font-weight:400"> ${item.unit}</span></span>
+      <button class="btn btn-sm btn-outline" style="font-size:11px;flex-shrink:0" onclick="restock(this,'${item.name}')">Restock</button>
+    </div>`;
+  }).join('');
+}
+
+function restock(btn,name){
+  btn.textContent='Ordered ✓';
+  btn.style.background='var(--green-light)';
+  btn.style.color='var(--green)';
+  btn.disabled=true;
+}
+
+// NOTIFICATIONS
+function updateTemplate(sel){
+  const templates={
+    'Appointment Reminder':'Hi Ahmed, this is a reminder from Sunrise Dental Clinic. Your appointment is tomorrow, Apr 17 at 10:30 AM. Reply CONFIRM to confirm or CANCEL to reschedule. Dr. Ahmad\'s team.',
+    'No-Show Follow-Up':'Hi Ahmed, we noticed you missed your appointment on Apr 16. We\'d love to reschedule — please call us at 123-456-7890 or reply to this message. Sunrise Dental.',
+    '6-Month Recall':'Hi Ahmed, it\'s been 6 months since your last cleaning at Sunrise Dental! Time for your routine checkup. Book online or call 123-456-7890.',
+    'Post-Procedure Check-In':'Hi Ahmed, we\'re checking in after your procedure yesterday. How are you feeling? Any pain or discomfort? Don\'t hesitate to call us. — Dr. Ahmad',
+  };
+  document.getElementById('msg-preview').value=templates[sel.value]||'';
+}
+
+// SCHEDULING
+function updateDuration(sel){
+  document.getElementById('apt-duration').value=sel.value+' minutes';
+}
+
+function bookAppointment(){
+  closeModal('new-apt-modal');
+  alert('Appointment booked! Confirmation SMS sent to patient.');
+}
+
+function updateStatus(el,status){
+  const row=el.closest('tr');
+  const badge=row.querySelector('.badge');
+  if(status==='Done'){badge.className='badge badge-green';badge.textContent='Completed';}
+  if(status==='Chair'){badge.className='badge badge-amber';badge.textContent='In Chair';}
+  el.parentElement.querySelectorAll('.status-step').forEach(s=>s.classList.remove('active-step'));
+  el.classList.add('active-step');
+}
+
+// INIT
+renderPatients();
+renderOdontogram();
+</script>
+</body>
+</html>
